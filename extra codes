@@ -1287,6 +1287,65 @@ export default function Pad(props) {
 {/* best thing in react is to have unified source of throughts . */}
 
 
+{/* {props.key} not correct way */}
+{/* Pad: `key` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. (https://react.dev/link/special-props) */}
+
+import React from "react";
+import Pad from "./components/Pad";
+import padsData from "./pads";
+
+export default function App() {
+  const [pads, setPads] = React.useState(padsData);
+
+  function toggle(id) {
+    // console.log(id);
+    setPads((prevPads) => prevPads.map((pad) => pad.id===id ? {...pad, on: !pad.on} : pad));
+  }
+
+  const buttonElements = pads.map((pad) => (
+    <Pad
+      toggle={toggle}
+      id={pad.id}
+      // key={pad.id} wrong way to pass key
+      color={pad.color}
+      on={pad.on}
+    />
+  ));
+
+  return (
+    <main>
+      <div className="pad-container">{buttonElements}</div>
+      <button className="all-off">Turn All Off</button>
+    </main>
+  );
+}
+
+
+import React from "react";
+
+export default function Pad(props) {
+  // const [on, setOn] = React.useState(props.on);
+
+  return (
+    <button
+      style={{ backgroundColor: props.color }}
+      className={props.on ? "on" : undefined}
+      onClick={() => props.toggle(props.id)}
+    ></button>
+  );
+}
+
+// export default function Pad(props) {
+//   const [change, setChange] = React.useState(props.on);
+
+//   return (
+//     <button
+//       onClick={() => setChange(!change)}
+//       style={{ backgroundColor: props.color }}
+//       className={change ? "on" : undefined}
+//     ></button>
+//   );
+// }
 
 
 
